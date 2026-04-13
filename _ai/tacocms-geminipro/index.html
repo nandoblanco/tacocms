@@ -1,0 +1,935 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TacoCMS - Build websites made delicious</title>
+		<style>
+			:root {
+				--color-primary: #ea580c;
+				--color-primary-hover: #c2410c;
+				--color-background: #fffdf8;
+				--color-surface: #ffffff;
+				--color-surface-alt: #fdf6e3;
+				--color-text-main: #1f2937;
+				--color-text-muted: #4b5563;
+				--color-border: #f3e8d6;
+				--color-code-bg: #1e1e24;
+				--color-code-text: #e0e0e0;
+				--grid-size: 40px;
+				--font-main:
+					system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+					sans-serif;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				font-family: var(--font-main);
+				color: var(--color-text-main);
+				background-color: var(--color-background);
+				line-height: 1.6;
+				overflow-x: hidden;
+			}
+
+			img {
+				max-width: 100%;
+				height: auto;
+				display: block;
+			}
+
+			a {
+				text-decoration: none;
+				color: inherit;
+			}
+
+			ul {
+				list-style: none;
+			}
+
+			.container {
+				width: 100%;
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.text-center {
+				text-align: center;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.75rem 1.5rem;
+				border-radius: 0.5rem;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.2s ease;
+				border: 2px solid transparent;
+			}
+
+			.btn-primary {
+				background-color: var(--color-primary);
+				color: #ffffff;
+			}
+
+			.btn-primary:hover {
+				background-color: var(--color-primary-hover);
+			}
+
+			.btn-outline {
+				background-color: transparent;
+				color: var(--color-text-main);
+				border-color: var(--color-border);
+			}
+
+			.btn-outline:hover {
+				border-color: var(--color-text-muted);
+			}
+
+			.icon-svg {
+				width: 24px;
+				height: 24px;
+				fill: currentColor;
+			}
+
+			/* Header */
+			header {
+				background-color: var(--color-surface);
+				border-bottom: 1px solid var(--color-border);
+				position: sticky;
+				top: 0;
+				z-index: 50;
+			}
+
+			.header-content {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				height: 4rem;
+			}
+
+			.logo {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: 1.25rem;
+				font-weight: 800;
+				color: var(--color-text-main);
+			}
+
+			.nav-links {
+				display: none;
+				gap: 2rem;
+				font-weight: 500;
+				font-size: 0.95rem;
+			}
+
+			.nav-actions {
+				display: none;
+				align-items: center;
+				gap: 1rem;
+			}
+
+			.mobile-menu-btn {
+				display: block;
+				background: none;
+				border: none;
+				cursor: pointer;
+				padding: 0.5rem;
+				color: var(--color-text-main);
+			}
+
+			.mobile-menu {
+				display: none;
+				position: absolute;
+				top: 4rem;
+				left: 0;
+				width: 100%;
+				background-color: var(--color-surface);
+				border-bottom: 1px solid var(--color-border);
+				padding: 1rem;
+				box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+			}
+
+			.mobile-menu.is-active {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+			}
+
+			/* Hero Section */
+			.hero {
+				position: relative;
+				padding: 5rem 0;
+				background-image:
+					linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+					linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+				background-size: var(--grid-size) var(--grid-size);
+				background-position: center top;
+			}
+
+			.hero-content {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+
+			.hero h1 {
+				font-size: 3.5rem;
+				font-weight: 900;
+				line-height: 1.1;
+				margin-bottom: 1.5rem;
+				letter-spacing: -0.02em;
+			}
+
+			.hero p {
+				font-size: 1.125rem;
+				color: var(--color-text-muted);
+				margin-bottom: 2rem;
+				max-width: 600px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.hero-actions {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+				margin-bottom: 4rem;
+			}
+
+			/* Mockup Editor UI */
+			.mockup-wrapper {
+				background-color: var(--color-surface);
+				border-radius: 0.75rem;
+				box-shadow:
+					0 20px 25px -5px rgba(0, 0, 0, 0.1),
+					0 10px 10px -5px rgba(0, 0, 0, 0.04);
+				border: 1px solid var(--color-border);
+				overflow: hidden;
+				max-width: 900px;
+				margin: 0 auto;
+			}
+
+			.mockup-header {
+				background-color: #f8fafc;
+				border-bottom: 1px solid var(--color-border);
+				padding: 0.75rem 1rem;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.mockup-dots {
+				display: flex;
+				gap: 0.35rem;
+			}
+
+			.mockup-dot {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background-color: #cbd5e1;
+			}
+
+			.mockup-search {
+				flex-grow: 1;
+				max-width: 300px;
+				margin: 0 auto;
+				background-color: #ffffff;
+				border: 1px solid #e2e8f0;
+				border-radius: 0.25rem;
+				padding: 0.25rem 0.5rem;
+				font-size: 0.75rem;
+				color: #94a3b8;
+			}
+
+			.mockup-body {
+				display: flex;
+				height: 400px;
+			}
+
+			.mockup-sidebar {
+				width: 200px;
+				background-color: #f8fafc;
+				border-right: 1px solid var(--color-border);
+				padding: 1rem;
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+
+			.mockup-sidebar-item {
+				padding: 0.5rem;
+				border-radius: 0.25rem;
+				font-size: 0.875rem;
+				color: var(--color-text-muted);
+				font-weight: 500;
+			}
+
+			.mockup-sidebar-item.active {
+				background-color: #ffedd5;
+				color: var(--color-primary);
+			}
+
+			.mockup-main {
+				flex-grow: 1;
+				padding: 1.5rem;
+				background-color: #ffffff;
+				overflow-y: auto;
+			}
+
+			.mockup-content-grid {
+				display: grid;
+				grid-template-columns: 2fr 1fr;
+				gap: 1.5rem;
+			}
+
+			.mockup-card {
+				border: 1px solid var(--color-border);
+				border-radius: 0.5rem;
+				padding: 1rem;
+				margin-bottom: 1rem;
+			}
+
+			.mockup-img-placeholder {
+				background-color: #e2e8f0;
+				height: 120px;
+				border-radius: 0.25rem;
+				margin-bottom: 0.5rem;
+			}
+
+			/* Features Section */
+			.features-section {
+				padding: 4rem 0;
+				background-color: #ffffff;
+			}
+
+			.section-title {
+				font-size: 1.875rem;
+				font-weight: 800;
+				text-align: center;
+				margin-bottom: 3rem;
+			}
+
+			.features-grid {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 2.5rem;
+			}
+
+			.feature-card {
+				text-align: center;
+				padding: 1rem;
+			}
+
+			.feature-icon-wrapper {
+				width: 64px;
+				height: 64px;
+				margin: 0 auto 1.25rem auto;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.feature-title {
+				font-size: 1.125rem;
+				font-weight: 700;
+				margin-bottom: 0.75rem;
+			}
+
+			.feature-desc {
+				color: var(--color-text-muted);
+				font-size: 0.95rem;
+			}
+
+			/* Scaling Section */
+			.scale-section {
+				padding: 4rem 0;
+			}
+
+			.scale-box {
+				background-color: var(--color-surface-alt);
+				border-radius: 1rem;
+				padding: 3rem 2rem;
+				text-align: center;
+				max-width: 900px;
+				margin: 0 auto;
+			}
+
+			.scale-title {
+				font-size: 1.5rem;
+				font-weight: 700;
+				margin-bottom: 2rem;
+			}
+
+			.code-block {
+				background-color: var(--color-code-bg);
+				color: var(--color-code-text);
+				padding: 1.5rem;
+				border-radius: 0.5rem;
+				font-family: monospace;
+				text-align: left;
+				overflow-x: auto;
+				font-size: 0.9rem;
+			}
+
+			.code-keyword {
+				color: #f97316;
+			}
+			.code-string {
+				color: #86efac;
+			}
+			.code-property {
+				color: #93c5fd;
+			}
+
+			/* Testimonials */
+			.testimonials-section {
+				padding: 4rem 0;
+			}
+
+			.testimonials-grid {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 1.5rem;
+				margin-bottom: 2rem;
+			}
+
+			.testimonial-card {
+				background-color: var(--color-surface-alt);
+				padding: 2rem;
+				border-radius: 0.75rem;
+				text-align: center;
+			}
+
+			.testimonial-text {
+				font-weight: 600;
+				font-size: 1.125rem;
+				margin-bottom: 1rem;
+			}
+
+			.testimonial-author {
+				color: var(--color-text-muted);
+				font-size: 0.9rem;
+			}
+
+			/* Footer */
+			footer {
+				background-color: var(--color-surface-alt);
+				padding: 4rem 0 2rem 0;
+				border-top: 1px solid var(--color-border);
+			}
+
+			.footer-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2rem;
+				margin-bottom: 3rem;
+			}
+
+			.footer-col h4 {
+				font-size: 1rem;
+				font-weight: 700;
+				margin-bottom: 1.25rem;
+			}
+
+			.footer-col ul {
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			.footer-col a {
+				color: var(--color-text-muted);
+				font-size: 0.9rem;
+				transition: color 0.2s;
+			}
+
+			.footer-col a:hover {
+				color: var(--color-primary);
+			}
+
+			.footer-bottom {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 1rem;
+				padding-top: 2rem;
+				border-top: 1px solid var(--color-border);
+				color: var(--color-text-muted);
+				font-size: 0.875rem;
+			}
+
+			/* Desktop Media Queries */
+			@media (min-width: 768px) {
+				.nav-links,
+				.nav-actions {
+					display: flex;
+				}
+				.mobile-menu-btn {
+					display: none;
+				}
+				.hero h1 {
+					font-size: 4.5rem;
+				}
+				.features-grid {
+					grid-template-columns: repeat(3, 1fr);
+				}
+				.footer-grid {
+					grid-template-columns: repeat(4, 1fr);
+				}
+				.testimonials-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+				.footer-bottom {
+					flex-direction: row;
+					justify-content: space-between;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="container header-content">
+				<div class="logo">
+					<svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+						<path
+							d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+							fill="#ea580c"
+						/>
+						<path
+							d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"
+							fill="#ea580c"
+						/>
+					</svg>
+					TacoCMS
+				</div>
+
+				<nav class="nav-links" aria-label="Main Navigation">
+					<a href="#ingredients">Ingredients</a>
+					<a href="#recipes">Recipes</a>
+					<a href="#marketplace">Marketplace</a>
+					<a href="#chefs">Chefs</a>
+					<a href="#community">Community</a>
+				</nav>
+
+				<div class="nav-actions">
+					<button
+						class="btn btn-outline"
+						style="padding: 0.5rem; border-radius: 50%"
+						aria-label="User Profile"
+					>
+						<svg class="icon-svg" viewBox="0 0 24 24">
+							<path
+								d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+							/>
+						</svg>
+					</button>
+				</div>
+
+				<button
+					class="mobile-menu-btn"
+					data-action="toggle-menu"
+					aria-expanded="false"
+					aria-label="Toggle navigation menu"
+				>
+					<svg class="icon-svg" viewBox="0 0 24 24">
+						<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+					</svg>
+				</button>
+			</div>
+
+			<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile Navigation">
+				<a href="#ingredients">Ingredients</a>
+				<a href="#recipes">Recipes</a>
+				<a href="#marketplace">Marketplace</a>
+				<a href="#chefs">Chefs</a>
+				<a href="#community">Community</a>
+			</nav>
+		</header>
+
+		<main>
+			<section class="hero text-center">
+				<div class="container">
+					<div class="hero-content">
+						<h1>Build websites<br />made delicious</h1>
+						<p>
+							TacoCMS powers your entire team with a flavor-winning user experience, a kind-hearted
+							community, and all the power of Laravel at your fingertips.
+						</p>
+
+						<div class="hero-actions">
+							<a href="#get-started" class="btn btn-primary">Get Cookin'</a>
+							<a href="#demo" class="btn btn-outline">Watch the Demo</a>
+						</div>
+					</div>
+
+					<div class="mockup-wrapper" aria-hidden="true">
+						<div class="mockup-header">
+							<div class="mockup-dots">
+								<div class="mockup-dot"></div>
+								<div class="mockup-dot"></div>
+								<div class="mockup-dot"></div>
+							</div>
+							<div class="mockup-search">Search...</div>
+							<div
+								style="width: 20px; height: 20px; background: #cbd5e1; border-radius: 50%"
+							></div>
+						</div>
+						<div class="mockup-body">
+							<div class="mockup-sidebar text-left">
+								<div style="font-weight: bold; margin-bottom: 1rem; color: #ea580c">
+									🌮 TacoCMS
+								</div>
+								<div class="mockup-sidebar-item">Dashboard</div>
+								<div class="mockup-sidebar-item active">Taco Content</div>
+								<div class="mockup-sidebar-item">Toppings</div>
+								<div class="mockup-sidebar-item">Menu Structure</div>
+								<div class="mockup-sidebar-item">Orders</div>
+								<div class="mockup-sidebar-item">Settings</div>
+							</div>
+							<div class="mockup-main text-left">
+								<div
+									style="
+										display: flex;
+										justify-content: space-between;
+										margin-bottom: 1.5rem;
+									"
+								>
+									<h3 style="font-size: 1.25rem">Taco Editor</h3>
+									<div>
+										<span style="font-size: 0.8rem; color: #94a3b8; margin-right: 0.5rem"
+											>Preview</span
+										>
+										<button
+											style="
+												background: #ea580c;
+												color: white;
+												border: none;
+												padding: 0.25rem 0.75rem;
+												border-radius: 0.25rem;
+												font-size: 0.8rem;
+											"
+										>
+											Save edition
+										</button>
+									</div>
+								</div>
+
+								<div class="mockup-content-grid">
+									<div>
+										<div class="mockup-card">
+											<h4 style="margin-bottom: 0.5rem">Text 1</h4>
+											<p style="font-size: 0.8rem; color: #64748b">
+												Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+												do eiusmod tempor incididunt ut labore.
+											</p>
+										</div>
+										<div class="mockup-card">
+											<h4 style="margin-bottom: 0.5rem">Ingredients</h4>
+											<p style="font-size: 0.8rem; color: #64748b">
+												Ut enim ad minim veniam, quis nostrud exercitation ullamco
+												laboris nisi ut aliquip ex ea commodo.
+											</p>
+										</div>
+									</div>
+									<div>
+										<div class="mockup-card">
+											<h4 style="margin-bottom: 0.5rem">Image</h4>
+											<div class="mockup-img-placeholder"></div>
+											<div style="font-size: 0.8rem; color: #64748b">
+												<div style="margin-bottom: 0.25rem">⚪ Beef</div>
+												<div style="margin-bottom: 0.25rem; color: #ea580c">
+													🟢 Chicken
+												</div>
+												<div style="margin-bottom: 0.25rem">⚪ Veggie</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="ingredients" class="features-section container">
+				<h2 class="section-title">Ingredients for Success</h2>
+				<div class="features-grid">
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #ea580c"
+							>
+								<path
+									d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Customize Your Taco</h3>
+						<p class="feature-desc">
+							Feel right at home with an admin area that adapts to your flavor profile.
+						</p>
+					</article>
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #eab308"
+							>
+								<path
+									d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Powerful Recipes</h3>
+						<p class="feature-desc">
+							Organize your content, forms, and other data types like a master chef.
+						</p>
+					</article>
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #10b981"
+							>
+								<path
+									d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">40+ Toppings</h3>
+						<p class="feature-desc">
+							Choose from a wide range of field types to build your perfect taco.
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<section id="workflow" class="features-section container" style="background-color: transparent">
+				<h2 class="section-title">Chef-Approved Workflow</h2>
+				<div class="features-grid">
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #f97316"
+							>
+								<path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z" />
+							</svg>
+						</div>
+						<h3 class="feature-title">Block-based Cooking</h3>
+						<p class="feature-desc">Build delicious layouts with powerful block-based editor.</p>
+					</article>
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #ef4444"
+							>
+								<path
+									d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Live Tasting</h3>
+						<p class="feature-desc">Preview your changes instantly.</p>
+					</article>
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #3b82f6"
+							>
+								<path
+									d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Multi-Kitchen Support</h3>
+						<p class="feature-desc">Manage multiple sites and languages.</p>
+					</article>
+				</div>
+			</section>
+
+			<section id="scale" class="scale-section container">
+				<div class="scale-box">
+					<h2 class="scale-title">From flat tortilla to full meal, TacoCMS scales with you</h2>
+					<div class="code-block">
+						<span class="code-keyword">const</span> taco = { <br />
+						&nbsp;&nbsp;<span class="code-property">name</span>:
+						<span class="code-string">"Spicy Beef"</span>, <br />
+						&nbsp;&nbsp;<span class="code-property">ingredients</span>: [<span class="code-string"
+							>"beef"</span
+						>, <span class="code-string">"cheese"</span>, <span class="code-string">"salsa"</span>],
+						<br />
+						&nbsp;&nbsp;<span class="code-property">spicy</span>:
+						<span class="code-keyword">true</span> <br />
+						};
+					</div>
+				</div>
+			</section>
+
+			<section id="ecosystem" class="features-section container">
+				<h2 class="section-title">Explore the ever-expanding Taco Ecosystem</h2>
+				<div class="features-grid">
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #f97316"
+							>
+								<path
+									d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Taco Marketplace</h3>
+						<p class="feature-desc">Find spicy add-ons and themes</p>
+					</article>
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #eab308"
+							>
+								<path
+									d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Starter Kit Kitchen</h3>
+						<p class="feature-desc">Jumpstart your project with ready-made taco kits</p>
+					</article>
+					<article class="feature-card">
+						<div class="feature-icon-wrapper">
+							<svg
+								class="icon-svg"
+								viewBox="0 0 24 24"
+								style="width: 48px; height: 48px; fill: #10b981"
+							>
+								<path
+									d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+								/>
+							</svg>
+						</div>
+						<h3 class="feature-title">Taco Experts Network</h3>
+						<p class="feature-desc">Hire a certified Taco Chef for your project</p>
+					</article>
+				</div>
+			</section>
+
+			<section id="testimonials" class="testimonials-section container text-center">
+				<h2 class="section-title">A kitchen community you can feel at home in</h2>
+
+				<div class="testimonials-grid">
+					<article class="testimonial-card">
+						<p class="testimonial-text">"TacoCMS makes building websites so much fun!"</p>
+						<p class="testimonial-author">- Chef Maria</p>
+					</article>
+					<article class="testimonial-card">
+						<p class="testimonial-text">"The best CMS since sliced tacos!"</p>
+						<p class="testimonial-author">- Dev Pedro</p>
+					</article>
+				</div>
+
+				<a href="#join" class="btn btn-primary">Join Our Kitchen</a>
+			</section>
+		</main>
+
+		<footer>
+			<div class="container">
+				<div class="footer-grid">
+					<div class="footer-col">
+						<h4>Product</h4>
+						<ul>
+							<li><a href="#features">Features</a></li>
+							<li><a href="#pricing">Pricing</a></li>
+							<li><a href="#roadmap">Roadmap</a></li>
+						</ul>
+					</div>
+					<div class="footer-col">
+						<h4>Resources</h4>
+						<ul>
+							<li><a href="#documentation">Documentation</a></li>
+							<li><a href="#recipes-docs">Recipes</a></li>
+							<li><a href="#community">Community</a></li>
+							<li><a href="#github">GitHub</a></li>
+						</ul>
+					</div>
+					<div class="footer-col">
+						<h4>Company</h4>
+						<ul>
+							<li><a href="#about">About Us</a></li>
+							<li><a href="#careers">Careers</a></li>
+							<li><a href="#brand">Brand Assets</a></li>
+							<li><a href="#contact">Contact</a></li>
+						</ul>
+					</div>
+					<div class="footer-col">
+						<h4>Contact the Head Chef</h4>
+						<ul>
+							<li><a href="mailto:email@tacocms.com">Contact the Head Chef</a></li>
+							<li><a href="mailto:email@tacocms.com">email@tacocms.com</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="footer-bottom">
+					<p>&copy; 2024 TacoCMS. All rights reserved. Cooked with love and tacos.</p>
+					<a href="#github" aria-label="GitHub Repository">
+						<svg class="icon-svg" viewBox="0 0 24 24">
+							<path
+								d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+							/>
+						</svg>
+					</a>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			"use strict";
+
+			const handleMobileMenuToggle = (event) => {
+				const toggleButton = event.target.closest('[data-action="toggle-menu"]');
+
+				if (toggleButton) {
+					const mobileMenu = document.getElementById("mobileMenu");
+					if (mobileMenu) {
+						const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
+						toggleButton.setAttribute("aria-expanded", String(!isExpanded));
+						mobileMenu.classList.toggle("is-active");
+					}
+				}
+			};
+
+			const setupEventListeners = () => {
+				document.addEventListener("click", handleMobileMenuToggle);
+			};
+
+			const init = () => {
+				setupEventListeners();
+			};
+
+			init();
+		</script>
+	</body>
+</html>
